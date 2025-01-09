@@ -2,3 +2,4 @@ numpy
 scikit-fuzzy
 flask
 matplotlib
+scipy
