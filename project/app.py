@@ -1,7 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 from fuzzy_system import calculate_heating_with_rule_strength, temperature, occupants, insulation, heating
-
+st.set_page_config(page_title="Ваш додаток", page_icon="🔥", layout="centered")
 # Заголовок додатку
 st.title("Systém regulácie teploty")
 # Функція для створення графіків функцій належності
