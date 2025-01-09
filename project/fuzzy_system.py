@@ -1,4 +1,116 @@
+# import numpy as np
+# import skfuzzy as fuzz
+# from skfuzzy import control as ctrl
 
+# # Вхідні змінні
+# temperature = ctrl.Antecedent(np.arange(0, 41, 1), 'temperature')
+# occupants = ctrl.Antecedent(np.arange(0, 11, 1), 'occupants')
+# insulation = ctrl.Antecedent(np.arange(0, 11, 1), 'insulation')
+
+# # Вихідна змінна
+# heating = ctrl.Consequent(np.arange(0, 101, 1), 'heating')
+
+# # Функції належності
+# # Розширення функцій належності. додав більше додаткових значень на 2
+# temperature['very_low'] = fuzz.trapmf(temperature.universe, [0, 0, 5, 10])
+# temperature['low'] = fuzz.trimf(temperature.universe, [5, 10, 15])
+# temperature['low_medium'] = fuzz.trimf(temperature.universe, [10, 15, 20])
+# temperature['high_medium'] = fuzz.trimf(temperature.universe, [15, 20, 25])
+# temperature['high'] = fuzz.trimf(temperature.universe, [20, 30, 40])
+# temperature['very_high'] = fuzz.trapmf(temperature.universe, [35, 40, 40, 40])
+
+# # Кількість людей. додав більше на 2 додаткових значень
+# occupants['very_few'] = fuzz.trapmf(occupants.universe, [0, 0, 1, 2])
+# occupants['few'] = fuzz.trimf(occupants.universe, [1, 3, 5])
+# occupants['few_moderate'] = fuzz.trimf(occupants.universe, [3, 5, 7])
+# occupants['moderate_many'] = fuzz.trimf(occupants.universe, [5, 7, 9])
+# occupants['many'] = fuzz.trimf(occupants.universe, [7, 9, 10])
+# occupants['very_many'] = fuzz.trapmf(occupants.universe, [8, 10, 10, 10])
+
+# # Рівень ізоляції.додав більше на 2 додаткових значень
+# insulation['very_poor'] = fuzz.trapmf(insulation.universe, [0, 0, 2, 4])
+# insulation['poor'] = fuzz.trimf(insulation.universe, [2, 4, 6])
+# insulation['average_poor'] = fuzz.trimf(insulation.universe, [4, 6, 7])
+# insulation['average_good'] = fuzz.trimf(insulation.universe, [6, 7, 9])
+# insulation['good'] = fuzz.trimf(insulation.universe, [7, 9, 10])
+# insulation['excellent'] = fuzz.trapmf(insulation.universe, [9, 10, 10, 10])
+
+# # Рівень нагрівання. додав більше на 2 додаткових значення
+# heating['very_low'] = fuzz.trapmf(heating.universe, [0, 0, 10, 20])
+# heating['low'] = fuzz.trimf(heating.universe, [10, 20, 40])
+# heating['low_medium'] = fuzz.trimf(heating.universe, [20, 40, 60])
+# heating['medium_high'] = fuzz.trimf(heating.universe, [40, 60, 80])
+# heating['high'] = fuzz.trimf(heating.universe, [60, 80, 100])
+# heating['very_high'] = fuzz.trapmf(heating.universe, [80, 100, 100, 100])
+
+# heating.defuzzify_method = 'centroid'
+
+# # Створення правил
+# rules = []
+
+# for temp_level in ['very_low', 'low', 'low_medium', 'high_medium', 'high', 'very_high']:
+#     for occ_level in ['very_few', 'few', 'few_moderate', 'moderate_many', 'many', 'very_many']:
+#         for ins_level in ['very_poor', 'poor', 'average_poor', 'average_good', 'good', 'excellent']:
+#             # змінив значення правла
+#             if temp_level in ['very_low', 'low']:
+#                 if ins_level in ['very_poor', 'poor']:
+#                     heating_level = 'very_high'  # Дуже високе опалення при низькій температурі
+#                 elif ins_level in ['average_poor', 'average_good'] and occ_level in ['few', 'few_moderate']:
+#                     heating_level = 'high'
+#                 else:
+#                     heating_level = 'medium_high'  # Використовуємо medium_high замість medium
+#             elif temp_level in ['low_medium', 'high_medium']:
+#                 if ins_level == 'excellent' and occ_level in ['very_few']:
+#                     heating_level = 'low'  # Дуже ефективна ізоляція
+#                 elif ins_level in ['poor', 'average_poor', 'average_good']:
+#                     heating_level = 'low_medium'  # Використовуємо low_medium замість medium
+#                 else:
+#                     heating_level = 'low'
+#             elif temp_level in ['high', 'very_high']:
+#                 if occ_level in ['many', 'very_many'] and ins_level in ['very_poor']:
+#                     heating_level = 'low_medium'  # Використовуємо low_medium замість medium
+#                 else:
+#                     heating_level = 'very_low'
+
+#             # Додавання правила
+#             rules.append(ctrl.Rule(
+#                 temperature[temp_level] & occupants[occ_level] & insulation[ins_level],
+#                 heating[heating_level]
+#             ))
+
+# heating_ctrl = ctrl.ControlSystem(rules)
+# heating_simulation = ctrl.ControlSystemSimulation(heating_ctrl)
+
+# # Функція для обчислення
+# def calculate_heating(temp, occ, ins):
+#     # Перевірка вхідних значень
+#     if not (0 <= temp <= 40):
+#         raise ValueError("Teplota by mala byť v rozmedzí 0-40 °C")
+#     if not (0 <= occ <= 10):
+#         raise ValueError("Počet osôb by mal byť v rozmedzí 0-10")
+#     if not (0 <= ins <= 10):
+#         raise ValueError("Úroveň izolácie by mala byť v rozmedzí 0-10")
+
+#     # Встановлення значень
+#     heating_simulation.input['temperature'] = temp
+#     heating_simulation.input['occupants'] = occ
+#     heating_simulation.input['insulation'] = ins
+
+#     # Діагностика: перевіряємо правила
+#     print("\nZoznam pravidiel:")
+#     for rule in heating_ctrl.rules:
+#         print(rule)
+
+#     # Обчислення
+#     heating_simulation.compute()
+
+#     # Перевірка результатів
+#     if 'heating' not in heating_simulation.output:
+#         raise KeyError("Výsledok 'heating' nebol vytvorený. Skontrolujte definície pravidiel a premenných.")
+
+#     result = heating_simulation.output['heating']
+#     print(f"Výsledok vykurovania: {result:.10f}%")
+#     return result
 import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
@@ -232,14 +344,10 @@ rules = [
     ctrl.Rule(temperature['very_high'] & occupants['very_few'] & insulation['good'], heating['very_low']),
     ctrl.Rule(temperature['very_high'] & occupants['very_few'] & insulation['excellent'], heating['very_low']),
     ctrl.Rule(temperature['very_high'] & occupants['few'] & insulation['very_poor'], heating['low']),
-
-
     ctrl.Rule(temperature['very_high'] & occupants['few'] & insulation['poor'], heating['very_low']),#187
     ctrl.Rule(temperature['very_high'] & occupants['few'] & insulation['average_poor'], heating['very_low']),#188
-
     ctrl.Rule(temperature['very_high'] & occupants['few'] & insulation['average_good'], heating['very_low']),
     ctrl.Rule(temperature['very_high'] & occupants['few'] & insulation['good'], heating['very_low']),
-    
     ctrl.Rule(temperature['very_high'] & occupants['few'] & insulation['excellent'], heating['very_low']),
     ctrl.Rule(temperature['very_high'] & occupants['few_moderate'] & insulation['very_poor'], heating['low']),
     ctrl.Rule(temperature['very_high'] & occupants['few_moderate'] & insulation['poor'], heating['very_low']),

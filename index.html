@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тепловий Контроль</title>
+    <title>Fuzzy-REG</title>
     <style>
         body {
             background-color: #1a1a1a;
@@ -14,13 +14,23 @@
         header {
             padding: 20px;
         }
-        h1 {
-            font-size: 3rem;
-            margin: 0;
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
+            max-height: 150px;
         }
         h2 {
             font-size: 1.5rem;
             margin: 10px 0 20px;
+        }
+        h3{
+            margin: 10px 0 20px;
+            font-weight: normal;
         }
         iframe {
             border: none;
@@ -31,8 +41,12 @@
 </head>
 <body>
     <header>
-        <h1>.Team</h1>
-        <h2>Тут склад команди</h2>
+        <div class="logo-container">
+            <img src="fyteam_logo.png" alt="FyTeam Logo">
+        </div>
+        <h2>Fuzzy-REG</h2>
+        <h3 class="description">We, fyTeam, made a program that calculates the percentage of radiator heating<br>according to several input values, calculating the result using fuzzy logic.<br>Feel free to try it out below!</h3>
+        <h4>Made by: Viktor Uhrynchuk, Anatolii Vasylov, Oleh Pelypenko, Volodymyr Porokh, Volodymyr Mishchuk</h3>
     </header>
     <iframe src="https://ui-skfuzzy.streamlit.app/?embedded=true"></iframe>
 </body>
