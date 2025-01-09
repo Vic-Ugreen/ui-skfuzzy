@@ -158,7 +158,7 @@ def plot_center_of_gravity_custom():
 
 # Візуалізація сили правил
 def visualize_rule_strength(temp, occ, ins):
-    st.write("## Візуалізація сили правил")
+    st.write("## Vizualizácia sily pravidiel")
 
     # Перебір кожного правила
     for idx, rule in enumerate(rules):
